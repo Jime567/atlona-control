@@ -268,16 +268,18 @@ func parseVolumeResponse(resp []byte, output string, parseCmd string) (input int
 func parseMuteResponse(resp []byte, output string, parseCmd string) (mute bool, err error) {
 	responses := strings.Split(string(resp), "\r\n")
 	responseContainsCMD := false
+
 	for _, value := range responses {
 		//fmt.Println("Slice: ", value)
 		if len(value) > 5 {
-			responseContainsCMD = strings.Contains(string(value), parseCmd)
+			responseContainsCMD = strings.Contains(strings.ToLower(string(value)), strings.ToLower(parseCmd))
 		} else {
 			continue
 		}
 		if responseContainsCMD {
 			v := strings.Split(string(value), " ")
 			state := v[1]
+			state = strings.ToLower(state)
 			//fmt.Println("state: ", state)
 			if err != nil {
 				return mute, err
