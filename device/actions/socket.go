@@ -107,5 +107,9 @@ func sendCommand(address string, port string, cmd []byte) ([]byte, error) {
 	}
 
 	conn.Close()
+	//replace all commas with \r\n in response
+	resp = []byte(strings.Replace(string(resp), ",", "\r\n", -1))
+	//replace all Uppercase X's with lowercase x's
+	resp = []byte(strings.Replace(string(resp), "X", "x", -1))
 	return resp, nil
 }
